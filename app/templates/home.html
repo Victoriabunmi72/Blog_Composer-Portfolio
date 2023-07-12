@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            background-image: url("https://media.istockphoto.com/photos/education-and-business-background-picture-id855645002?k=6&m=855645002&s=170667a&w=0&h=B01RtvK8TjFOasYwhvWUaZte45AoHZ-1ioXN087HBNQ=");
+            background-repeat: no-repeat;
+            background-size: cover;
+            text-align: center;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="background-image">
+    <h1 class="center">Welcome, {{ username }}!</h1>
+    <p class="left"><a href="{{ url_for('reset_password') }}">Reset Password</a></p>
+    <p class="left"><a href="{{ url_for('logout') }}">Logout</a></p>
+    <form id="keyword-form">
+        <input name="keyword" placeholder="Enter keyword">
+        <button id="keyword-button" type="submit">
+            Generate
+        </button>
+    </form>
+
+    <div id="result-placeholder"></div>
+
+    <script>
+        $(document).ready(function () {
+            $("#keyword-button").click(function () {
+                $("#keyword-form").submit(function (e) {
+                    e.preventDefault();
+                    var formData = $(this).serializeArray();
+                    var jsonData = {};
+                    
+                    $(formData).each(function(index, obj) {
+                        jsonData[obj.name] = obj.value;
+                    });
+                    
+                    var data = JSON.stringify(jsonData);
+                    console.log(data);
+                    $.ajax({
+                        url: "api/compose",
+                        type: "POST",
+                        data: data,
+                        contentType: "application/json",
+                        success: function(response) {
+                            console.log(response);
+                            $("#result-placeholder").text(response.article); 
+                        },
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

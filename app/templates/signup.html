@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup</title>
+    <style>
+        /* Set the background image and adjust its appearance */
+        body {
+            background-image: url("https://i.pinimg.com/originals/8e/bb/95/8ebb95651413e82afb2bd6026a5b64c7.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Center-align the content and set the text color to white */
+        body, .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        /* Add spacing for the elements */
+        .container form {
+            margin-bottom: 20px;
+        }
+
+        .container p {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body class="background-image">
+    <div class="container">
+        <h1>Signup</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        <form method="POST" action="{{ url_for('signup') }}">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
+            <input type="submit" value="Signup">
+        </form>
+        <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+    </div>
+</body>
+</html>
