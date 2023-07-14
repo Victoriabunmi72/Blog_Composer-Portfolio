@@ -16,13 +16,23 @@
         .center {
             text-align: center;
         }
+
+        .left {
+            text-align: left;
+        }
+
+        .right {
+            text-align: right;
+        }
     </style>
 </head>
 <body class="background-image">
     <h1 class="center">Welcome, {{ username }}!</h1>
-    <p class="left"><a href="{{ url_for('reset_password') }}">Reset Password</a></p>
-    <p class="left"><a href="{{ url_for('logout') }}">Logout</a></p>
-    <form id="keyword-form">
+    <div class="left">
+        <p><a href="{{ url_for('reset_password') }}">Reset Password</a></p>
+        <p><a href="{{ url_for('logout') }}">Logout</a></p>
+    </div>
+    <form id="keyword-form" class="right">
         <input name="keyword" placeholder="Enter keyword">
         <button id="keyword-button" type="submit">
             Generate
@@ -33,28 +43,26 @@
 
     <script>
         $(document).ready(function () {
-            $("#keyword-button").click(function () {
-                $("#keyword-form").submit(function (e) {
-                    e.preventDefault();
-                    var formData = $(this).serializeArray();
-                    var jsonData = {};
-                    
-                    $(formData).each(function(index, obj) {
-                        jsonData[obj.name] = obj.value;
-                    });
-                    
-                    var data = JSON.stringify(jsonData);
-                    console.log(data);
-                    $.ajax({
-                        url: "api/compose",
-                        type: "POST",
-                        data: data,
-                        contentType: "application/json",
-                        success: function(response) {
-                            console.log(response);
-                            $("#result-placeholder").text(response.article); 
-                        },
-                    });
+            $("#keyword-form").submit(function (e) {
+                e.preventDefault();
+                var formData = $(this).serializeArray();
+                var jsonData = {};
+                
+                $(formData).each(function(index, obj) {
+                    jsonData[obj.name] = obj.value;
+                });
+                
+                var data = JSON.stringify(jsonData);
+                console.log(data);
+                $.ajax({
+                    url: "api/compose",
+                    type: "POST",
+                    data: data,
+                    contentType: "application/json",
+                    success: function(response) {
+                        console.log(response);
+                        $("#result-placeholder").text(response.article); 
+                    },
                 });
             });
         });
